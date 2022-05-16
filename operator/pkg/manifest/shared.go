@@ -15,6 +15,7 @@
 package manifest
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -346,12 +347,15 @@ func GetMergedIOP(userIOPStr, profile, manifestsPath, revision string, client ku
 	return mergedIOP, nil
 }
 
-// validateSetFlags validates that setFlags all have path=value format.
+// validateSetFlags 1: validates that setFlags all have path=value format, 2: check profile whether it is deprecated
 func validateSetFlags(setFlags []string) error {
 	for _, sf := range setFlags {
 		pv := strings.Split(sf, "=")
 		if len(pv) != 2 {
 			return fmt.Errorf("set flag %s has incorrect format, must be path=value", sf)
+		}
+		if pv[0] == "profile" && pv[1] == "remote" {
+			return errors.New("profile \"remote\" has been removed and is equivalent to \"default\"")
 		}
 	}
 	return nil
