@@ -114,7 +114,8 @@ func ManifestGenerate(args *RootArgs, mgArgs *ManifestGenerateArgs, logopts *log
 	if err := configLogs(logopts); err != nil {
 		return fmt.Errorf("could not configure logs: %s", err)
 	}
-
+	fmt.Printf("args: %v", args)
+	fmt.Printf("mgArgs: %v", mgArgs)
 	manifests, _, err := manifest.GenManifests(mgArgs.InFilenames, applyFlagAliases(mgArgs.Set, mgArgs.ManifestsPath, mgArgs.Revision),
 		mgArgs.Force, mgArgs.Filter, nil, l)
 	if err != nil {
