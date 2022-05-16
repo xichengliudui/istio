@@ -51,10 +51,12 @@ var installerScope = log.RegisterScope("installer", "installer", 0)
 // supplied logger.
 func GenManifests(inFilename []string, setFlags []string, force bool, filter []string,
 	client kube.Client, l clog.Logger) (name.ManifestMap, *iopv1alpha1.IstioOperator, error) {
+	fmt.Println("hello world 1")
 	mergedYAML, _, err := GenerateConfig(inFilename, setFlags, force, client, l)
 	if err != nil {
 		return nil, nil, err
 	}
+	fmt.Println("hello end")
 	mergedIOPS, err := unmarshalAndValidateIOP(mergedYAML, force, false, l)
 	if err != nil {
 		return nil, nil, err
@@ -94,11 +96,12 @@ func GenerateConfig(inFilenames []string, setFlags []string, force bool, client 
 		return "", nil, err
 	}
 
+	fmt.Println("hello world 2")
 	fy, profile, err := ReadYamlProfile(inFilenames, setFlags, force, l)
 	if err != nil {
 		return "", nil, err
 	}
-
+	fmt.Println("hello world 3")
 	return OverlayYAMLStrings(profile, fy, setFlags, force, client, l)
 }
 
@@ -124,6 +127,7 @@ func OverlayYAMLStrings(profile string, fy string,
 // files and the --set flag. If successful, it returns an IstioOperator string and struct.
 func GenIOPFromProfile(profileOrPath, fileOverlayYAML string, setFlags []string, skipValidation, allowUnknownField bool,
 	client kube.Client, l clog.Logger) (string, *iopv1alpha1.IstioOperator, error) {
+	fmt.Println("hello world 4")
 	installPackagePath, err := getInstallPackagePath(fileOverlayYAML)
 	if err != nil {
 		return "", nil, err
@@ -141,6 +145,7 @@ func GenIOPFromProfile(profileOrPath, fileOverlayYAML string, setFlags []string,
 
 	// To generate the base profileOrPath for overlaying with user values, we need the installPackagePath where the profiles
 	// can be found, and the selected profileOrPath. Both of these can come from either the user overlay file or --set flag.
+	fmt.Println("hello world 5")
 	outYAML, err := helm.GetProfileYAML(installPackagePath, profileOrPath)
 	if err != nil {
 		return "", nil, err
@@ -215,6 +220,7 @@ func GenIOPFromProfile(profileOrPath, fileOverlayYAML string, setFlags []string,
 // ReadYamlProfile gets the overlay yaml file from list of files and return profile value from file overlay and set overlay.
 func ReadYamlProfile(inFilenames []string, setFlags []string, force bool, l clog.Logger) (string, string, error) {
 	profile := name.DefaultProfileName
+
 	// Get the overlay YAML from the list of files passed in. Also get the profile from the overlay files.
 	fy, fp, err := ParseYAMLFiles(inFilenames, force, l)
 	if err != nil {

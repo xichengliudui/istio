@@ -73,13 +73,19 @@ func ReadProfileYAML(profile, manifestsPath string) (string, error) {
 	var err error
 	var globalValues string
 
+	fmt.Println("============================")
+	fmt.Println(profile)
+	fmt.Println(manifestsPath)
+	fmt.Println("============================")
 	// Get global values from profile.
 	switch {
 	case util.IsFilePath(profile):
+		fmt.Println("case 1")
 		if globalValues, err = readFile(profile); err != nil {
 			return "", err
 		}
 	default:
+		fmt.Println("case 2")
 		if globalValues, err = LoadValues(profile, manifestsPath); err != nil {
 			return "", fmt.Errorf("failed to read profile %v from %v: %v", profile, manifestsPath, err)
 		}
@@ -220,6 +226,7 @@ func GetProfileYAML(installPackagePath, profileOrPath string) (string, error) {
 	if profiles[profileOrPath] && installPackagePath != "" {
 		profileOrPath = filepath.Join(installPackagePath, "profiles", profileOrPath+".yaml")
 	}
+	fmt.Println("hello world 7")
 	// This contains the IstioOperator CR.
 	baseCRYAML, err := ReadProfileYAML(profileOrPath, installPackagePath)
 	if err != nil {
