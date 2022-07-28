@@ -58,6 +58,7 @@ func GenManifests(inFilename []string, setFlags []string, force bool, filter []s
 		return nil, nil, err
 	}
 	mergedIOPS, err := unmarshalAndValidateIOP(mergedYAML, force, false, l)
+	fmt.Printf("mergedIOPS == \n%v", mergedIOPS)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -71,6 +72,7 @@ func GenManifests(inFilename []string, setFlags []string, force bool, filter []s
 		}
 	}
 	cp, err := controlplane.NewIstioControlPlane(mergedIOPS.Spec, t, filter, ver)
+	fmt.Printf("cp == %v\n", cp)
 	if err != nil {
 		return nil, nil, err
 	}
