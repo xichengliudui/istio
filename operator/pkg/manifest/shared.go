@@ -15,7 +15,6 @@
 package manifest
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -59,9 +58,6 @@ func GenManifests(inFilename []string, setFlags []string, force bool, filter []s
 		return nil, nil, err
 	}
 	mergedIOPS, err := unmarshalAndValidateIOP(mergedYAML, force, false, l)
-	j, _ := json.Marshal(mergedIOPS)
-	fmt.Printf("mergedIOPS == %v", string(j))
-	fmt.Println()
 	if err != nil {
 		return nil, nil, err
 	}

@@ -423,6 +423,10 @@ func renderManifest(c IstioComponent, cf *CommonComponentFields) (string, error)
 		metrics.CountManifestRenderError(c.ComponentName(), metrics.HelmTranslateIOPToValuesError)
 		return "", err
 	}
+	if c.ComponentName() == "Base" {
+		fmt.Println("==================mergedYAML====================")
+		fmt.Println(mergedYAML)
+	}
 
 	scope.Debugf("Merged values:\n%s\n", mergedYAML)
 
@@ -433,6 +437,10 @@ func renderManifest(c IstioComponent, cf *CommonComponentFields) (string, error)
 		log.Errorf("Error rendering the manifest: %s", err)
 		metrics.CountManifestRenderError(c.ComponentName(), metrics.HelmChartRenderError)
 		return "", err
+	}
+	if c.ComponentName() == "Base" {
+		fmt.Println("==================my1====================")
+		fmt.Println(my)
 	}
 	my += helm.YAMLSeparator + "\n"
 	scope.Debugf("Initial manifest with merged values:\n%s\n", my)
@@ -446,7 +454,10 @@ func renderManifest(c IstioComponent, cf *CommonComponentFields) (string, error)
 	cnOutput := string(cf.ComponentName)
 	my = "# Resources for " + cnOutput + " component\n\n" + my
 	scope.Debugf("Manifest after k8s API settings:\n%s\n", my)
-
+	if c.ComponentName() == "Base" {
+		fmt.Println("==================my2====================")
+		fmt.Println(my)
+	}
 	// Add the k8s resource overlays from IstioOperatorSpec.
 	pathToK8sOverlay := fmt.Sprintf("Components.%s.", cf.ComponentName)
 	if cf.ComponentName == name.IngressComponentName || cf.ComponentName == name.EgressComponentName {
@@ -473,6 +484,10 @@ func renderManifest(c IstioComponent, cf *CommonComponentFields) (string, error)
 	if err != nil {
 		metrics.CountManifestRenderError(c.ComponentName(), metrics.K8SManifestPatchError)
 		return "", err
+	}
+	if c.ComponentName() == "Base" {
+		fmt.Println("==================ret====================")
+		fmt.Println(ret)
 	}
 
 	scope.Debugf("Manifest after resources and overlay: \n%s\n", ret)

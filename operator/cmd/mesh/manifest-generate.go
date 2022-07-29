@@ -120,11 +120,6 @@ func ManifestGenerate(args *RootArgs, mgArgs *ManifestGenerateArgs, logopts *log
 	if err != nil {
 		return err
 	}
-	for key, val := range manifests {
-		fmt.Printf("component key == %v\n", key)
-		fmt.Printf("component val == %v\n", val)
-	}
-	fmt.Printf("len(mgArgs.Components) == %d\n", len(mgArgs.Components))
 
 	if len(mgArgs.Components) != 0 {
 		filteredManifests := name.ManifestMap{}
