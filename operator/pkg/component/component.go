@@ -20,6 +20,7 @@ See ../README.md for an architecture overview.
 package component
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"k8s.io/apimachinery/pkg/version"
@@ -129,6 +130,10 @@ func (c *BaseComponent) Run() error {
 
 // RenderManifest implements the IstioComponent interface.
 func (c *BaseComponent) RenderManifest() (string, error) {
+	fmt.Println("==================")
+	cs, _ := json.Marshal(c)
+	fmt.Println(string(cs))
+	fmt.Println("==================")
 	return renderManifest(c, c.CommonComponentFields)
 }
 
